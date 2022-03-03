@@ -48,10 +48,6 @@ class Messung:
         plt.savefig("../plots/"+ filename)
 
 
-    
-
-
-
 class Probe:
     def __init__(self, probename):
         name = probename

@@ -9,7 +9,7 @@ winkelZyklisch = ["10","20","30"]
 dateinamenZirkular = [base + "/data/zyklisch/{0}grad.TKA".format(x) for x in winkelZyklisch]
 dateinamenBackgroundZirkular = [base + "/data/zyklisch/{0}gradHIntergrund.TKA".format(x) for x in winkelZyklisch]
 for i in range(len(winkelZyklisch)):    
-    Messung(dateinamenZirkular[i], dateinamenBackgroundZirkular[i],"zirkular","Cs173s").plotData("","zirkular"+ winkelZyklisch[i]+ "Gard")
+    Messung(dateinamenZirkular[i], dateinamenBackgroundZirkular[i],"zirkular","Cs173s").plotData("Zirkular: " + winkelZyklisch[i] ,"zirkular"+ winkelZyklisch[i]+ "Gard")
 
 
 for i in range(len(probenDirekt)):
