@@ -13,16 +13,24 @@ class Messung:
             tmp = np.array(list(map(int , datei.read().split("\n")[:-1]))) #we need to remove the last part of the list because it ist equal to ""
             self.liveTime, self.realTime = tmp[:2]  #live Time in der ersten Zeile 
             self.messreiheRaw = tmp[2:]
+            self.messreiheRawError = np.sqrt(self.messreiheRaw)
 
         #Background
         with open(dateinameBackground,"r") as datei: 
             tmp = np.array(list(map(int , datei.read().split("\n")[:-1]))) #we need to remove the last part of the list because it ist equal to ""
             self.liveTimeBackground, self.liveTimeBackground = tmp[:2]  #live Time in der ersten Zeile 
             self.messreiheBackground = tmp[2:]
+            self.messreiheBackgroundError = np.sqrt(self.messreiheBackground)
         
-        #Corrected and normed
+
+        #   Fehler fortpflanzung
+        #Corrected (messreihe sind ereignisse pro zeit)
         self.messreihe = self.messreiheRaw/self.liveTime - self.messreiheBackground/self.liveTimeBackground
+        self.messreiheError = np.sqrt((self.messreiheRawError/self.liveTime)**2 + (self.messreiheBackgroundError/self.liveTimeBackground)**2)
+        
+        #normieren 
         self.messreihe = self.messreihe /max(self.messreihe)
+        self.messreiheError = self.messreiheError/ max(self.messreihe)
 
         #print( messtyp +" " + str(probename) + " " + str(self.liveTime) +" " +  str(self.realTime))
         if probename!=None:
@@ -43,7 +51,7 @@ class Messung:
         plt.title(title + "(Background korriegiert und normiert)")
         plt.ylabel("normierte Häufigkeit pro Zeit")
         plt.xlabel("Channels")
-        plt.plot(np.array(self.messreihe)/max(self.messreihe),label="relative Häufigkeit der Messdaten-Background")
+        plt.errorbar(np.array(self.messreihe),yerr=self.messreiheError,label="relative Häufigkeit der Messdaten-Background")
         plt.legend()
         plt.savefig("../plots/"+ filename+"Corrected")
         plt.close("all")

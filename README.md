@@ -5,13 +5,17 @@ weil alex ist uncool
 
 # ToDo
 - Morgen:
-    1. Hintergrundstrahlung lang 
-    2. zyklisch kurz messen (großer ring)
-
     3. winkel messung bei konventionell
+    4. messen der länge der probe
+    5. r0 
+    6. streukörper 
+    7. Quelle vermessen 
+
+    1. x- fehler im Residuenplot?
 
 - Fragen:
     - Unsicherheiten auf die Häufigkeiten sqrt(E) jedes messwerts oder sqrt(E_max)?
+    - Unischerheit auf channels durch kleinste Skala?
 - sonstiges:
     - Fd bestimmen
 
