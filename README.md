@@ -11,13 +11,11 @@ weil alex ist uncool
     6. streukörper 
     7. Quelle vermessen 
 
-    1. x- fehler im Residuenplot?
+    1. x- fehler im Residuenplot?!
 
 - Fragen:
     - Unsicherheiten auf die Häufigkeiten sqrt(E) jedes messwerts oder sqrt(E_max)?
     - Unischerheit auf channels durch kleinste Skala?
-- sonstiges:
-    - Fd bestimmen
 
 - direkte Messung 
     + 1. messungen:  [Co,Na,Cs,Eu,Rausch](5)  * 20 min = 100min = 1:40h
@@ -51,3 +49,4 @@ weil alex ist uncool
     - Energie: Fehlerfortpflanzung aus den Channels
 
 
+3*(2*20+10) 
