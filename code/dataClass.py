@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 
 class Messung:
-    def __init__(self, dateiname, dateinameBackground, messtyp, probename=None):
-        self.messtyp = messtyp
-        
+    def __init__(self, dateiname, dateinameBackground, messtyp, messparameter, probename=None):
+        self.typ = messtyp
+        self.parameter = messparameter
         #Raw Data 
         with open(dateiname,"r") as datei: 
             tmp = np.array(list(map(int , datei.read().split("\n")[:-1]))) #we need to remove the last part of the list because it ist equal to ""
