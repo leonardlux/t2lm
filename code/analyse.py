@@ -1,5 +1,6 @@
 from cProfile import label
 from pprint import pprint
+from matplotlib import gridspec
 import matplotlib.pyplot as plt
 import scipy.odr as odr
 import numpy as np
@@ -42,5 +43,13 @@ def gaussAnpassung(messreihe,channelRange):
         plt.legend()
         plt.savefig( "../plots/anpassung")
         plt.close("all")
+
+        # fig, axs = plt.subplots(2,1, sharex=True, figsize=(20,10),gridspec_kw={'height_ratios': [3,1]})
+        # for i in range(len(axs)):
+        #     ax.axvlines(channelRange,0,1,color="red")
+        #     ax.axvlines(myOdr.output.beta[0],0,1,label="MittelwertAnpassung",color="green")
+        
+
+        #fig.savefig("../plots/anpassungResiduen")
     return myOdr.output.beta[:1]
 
