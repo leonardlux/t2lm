@@ -16,9 +16,11 @@ dateinamenZirkular = [base + "/data/zyklisch/{0}grad.TKA".format(x) for x in win
 dateinamenBackgroundZirkular = [base + "/data/zyklisch/{0}gradHIntergrund.TKA".format(x) for x in winkelZyklisch]
 
 messungenZyklisch = []
+intervallPeakArray = [[],[],[],[]]
 for i in range(len(winkelZyklisch)):    
     messungenZyklisch.append(Messung(dateinamenZirkular[i], dateinamenBackgroundZirkular[i],"zirkular","Cs173s"))
-    
+    #gaussAnpassung(messungenZyklisch[3].messreihe, )
+
     #messungenZyklisch[i].plotData("Zirkular: " + winkelZyklisch[i] ,"zirkular"+ winkelZyklisch[i]+ "Gradd")
 
 if False:
