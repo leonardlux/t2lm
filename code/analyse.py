@@ -1,8 +1,9 @@
 
-from matplotlib import gridspec
+
 import matplotlib.pyplot as plt
 import scipy.odr as odr
 import numpy as np
+
 
 def gf(B,x):
     #B[0] ist der Erwartunswert
@@ -18,7 +19,7 @@ def lf(B,x):
 gauss = odr.Model(gf)
 linear = odr.Model(lf)
 
-def gaussAnpassung(Messung,channelRange, plot=False, extraTitle=""):
+def gaussAnpassung(Messung,channelRange, plot=False, extraTitle="", halbwert=False):
 
     cutMessreihe = Messung.messreihe[channelRange[0]:channelRange[1]]
     cutMessreiheError = Messung.messreiheError[channelRange[0]:channelRange[1]]
@@ -34,8 +35,9 @@ def gaussAnpassung(Messung,channelRange, plot=False, extraTitle=""):
     myData = odr.RealData(cutChannels, cutMessreihe, sy=cutMessreiheError, sx=1/np.sqrt(12)) #Unsicherheit auf die Messwerte ist die Wurzel des ersten guesses
     myOdr = odr.ODR(myData, gauss, beta0=guess)
     myOdr.run()
-    print(myOdr.output.beta)
-    #myOutput.pprint()
+    if False:
+        print(myOdr.output.beta)
+        myOdr.output.pprint()
 
     if plot:
         addChannel = 0
@@ -76,8 +78,13 @@ def gaussAnpassung(Messung,channelRange, plot=False, extraTitle=""):
         axs[0].title.set_text("Anpassung und Residuenplot: " + Messung.typ + " " + Messung.parameter + " " + extraTitle )
         axs[1].hlines(0,channelsPlot[0],channelsPlot[-1])
         
-        fig.savefig("../plots/anpassungResiduen" + Messung.typ + Messung.parameter + extraTitle)
-    return myOdr
+        fig.savefig("../plots/anpassung" + Messung.typ + Messung.parameter + extraTitle)
+    if not halbwert:   
+        return myOdr
+    else: 
+
+        deltaChannel = 0
+        return myOdr, deltaChannel
 
 def linAnpassung(xValues, yValues, exValues, eyValues,plot=False):
     guess = [(yValues[-1]-yValues[0])/(xValues[-1]-xValues[0]),5]

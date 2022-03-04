@@ -4,27 +4,23 @@ fortgeschrittenen Praktikum Versuch T2 - Mathilde und Leo
 weil alex ist uncool
 
 # ToDo
-- Morgen:
-    3. winkel messung bei konventionell
-    4. messen der länge der probe
-    5. r0 
-    6. streukörper 
-    7. Quelle vermessen 
 
-    1. x- fehler im Residuenplot?!
 
-- Fragen:
-    - Unsicherheiten auf die Häufigkeiten sqrt(E) jedes messwerts oder sqrt(E_max)?
-    - Unischerheit auf channels durch kleinste Skala?
+ + was ist residual varianz
+
+
 
 - direkte Messung 
     + 1. messungen:  [Co,Na,Cs,Eu,Rausch](5)  * 20 min = 100min = 1:40h
     + 2. messungen:  [Co,Na,Cs,Eu,Rausch](5)  * 10 min = 50 min = 0:50h
-
+    (fern kann auch ausgerwertet werden)
+    
     - Auswertung:
-    - Zweck: Channel-Energie zuordnung
-    - Hintergrundabziehen 
-    - Gaußanpassung 
+    + Zweck: Channel-Energie zuordnung
+    + Hintergrundabziehen 
+    + Gaußanpassung 
+    - halbwerts wert
+
     - breite der anpassungen bestimmen => DELTA E
     - lineare Regression an die punkte machen 
     - Fehlerbestimmung (a und b)

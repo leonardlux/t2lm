@@ -43,10 +43,10 @@ dateinamenBackgroundKonventionell = [base + "/data/konventionell/{0}gradHintergr
 
 messungenDirekt = []
 intervallPeakArrayDirekt = [
-                    [[825,880],[920,980]],
-                    [[450,550]],
-                    [[95, 110], [250, 290], [542, 612], [678, 748], [768, 838], [939, 1009]],
-                    [[850,950]]]
+                    [[820,880],[905,975]],
+                    [[460,535]],
+                    [[93, 110], [247, 283], [551, 615], [682, 744], [765, 850], [945, 1005]],
+                    [[350, 423],[860,950]]]
 
 peakEnergy = [Co60.peakEnergy, Cs137w.peakEnergy, Eu152.peakEnergy, Na22.peakEnergy]
 
@@ -67,15 +67,26 @@ for i in range(len(probenDirekt)):
 
 #Lineare Regression aus den bekannten Energie werten der Peaks und der Channel zahl
 #Energy = x * Channel
-# energyData  = [1173.2, 1332.5, 661.66, 1274.5]
-# print(len(messungenDirekt))
-# channelData = [
-#                 messungenDirekt[0].anpassungen[0].output.beta[0],
-#                 messungenDirekt[0].anpassungen[1].output.beta[0],
-#                 messungenDirekt[1].anpassungen[0].output.beta[0],
-#                 messungenDirekt[3].anpassungen[0].output.beta[0],
-#                 ]
-# linAnpassung(energyData, channelData, None, None, True)
+energyData = []
+channelData = []
+source = []
+
+for i in range(len(probenDirekt)):
+    for j in range(len(messungenDirekt[i].anpassungen)):
+        if i == 3 and j == 0:
+            continue 
+        energyData.append(messungenDirekt[i].Probe.peakEnergy[j])
+        channelData.append(messungenDirekt[i].anpassungen[j].output.beta[0])
+        source.append(messungenDirekt[i].Probe.name +" Peak: " +str(j+1))
+
+print(energyData)
+print(len(energyData))
+
+print(channelData)
+print(len(channelData))
+
+print(source)
+linAnpassung(energyData, channelData, None, None, True)
 
 
 
@@ -83,7 +94,7 @@ for i in range(len(probenDirekt)):
 
 #Auswertung Zyklisch
 messungenZyklisch = []
-intervallPeakArray = [[435, 545], [405, 515], [370, 480], [330, 435],[]]
+intervallPeakArray = [[435, 545], [405, 515], [370, 480], [330, 435],[0,1000]]
 if False:    
     for i in range(len(winkelZyklisch)):    
         #einlesen und definieren der Messreihen mit Korrektur Offset
@@ -121,7 +132,7 @@ messungenAl = []
 intervallPeakArrayFe = [[435, 545], [405, 515], [370, 480], [330, 435],[20,300]]
 intervallPeakArrayAl = [[],[],[],[],[]]
 
-if True:
+if False:
     for i in range(len(winkelKonventionell)):
         #einlesen
         messungenFe.append(Messung(dateinamenKonventionellFe[i], dateinamenBackgroundKonventionell[i], "konventionellFe", winkelKonventionell[i],"Cs173s"))
