@@ -31,14 +31,14 @@ def gaussAnpassung(messreihe,channelRange):
     if True:
         addChannel = 15
         channelsPlot = np.arange(channelRange[0] -addChannel,channelRange[1]+ addChannel)
-        print(channelsPlot)
-        print(messreihe[channelst[0]:channelsPlot[-1]])
 
         plt.figure(figsize=(20,10))
         plt.title("Anpassung")
-        plt.scatter(channelsPlot,messreihe[channelsPlot[0]:channelsPlot[1]],label="Messwerte")
-        #plt.plot(np.linspace(channelsPlot[0],channelsPlot[-1]),gf(myOdr.output.beta,np.linspace(channelsPlot[0],channelsPlot[-1])),label="Anpassung")
-        #plt.vlines(myOdr.output.beta[0],0,1,label="MittelwertAnpassung",color="green")
+        plt.scatter(channelsPlot,messreihe[channelsPlot[0]:channelsPlot[-1]+1],label="Messwerte",color="red")
+        plt.plot(np.linspace(channelRange[0],channelRange[-1]),gf(myOdr.output.beta,np.linspace(channelRange[0],channelRange[-1])),label="Anpassung")
+    
+        plt.vlines(myOdr.output.beta[0],0,1,label="MittelwertAnpassung",color="green")
+        plt.vlines(channelRange,0,1,color="red")
         plt.legend()
         plt.savefig( "../plots/anpassung")
         plt.close("all")
