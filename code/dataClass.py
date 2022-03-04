@@ -21,16 +21,15 @@ class Messung:
             self.liveTimeBackground, self.liveTimeBackground = tmp[:2]  #live Time in der ersten Zeile 
             self.messreiheBackground = tmp[2:]
             self.messreiheBackgroundError = np.sqrt(self.messreiheBackground)
-        
 
         #   Fehler fortpflanzung
         #Corrected (messreihe sind ereignisse pro zeit)
-        self.messreihe = self.messreiheRaw/self.liveTime - self.messreiheBackground/self.liveTimeBackground
-        self.messreiheError = np.sqrt((self.messreiheRawError/self.liveTime)**2 + (self.messreiheBackgroundError/self.liveTimeBackground)**2)
+        corrected = self.messreiheRaw/self.liveTime - self.messreiheBackground/self.liveTimeBackground
+        corrected_Error = np.sqrt((self.messreiheRawError/self.liveTime)**2 + (self.messreiheBackgroundError/self.liveTimeBackground)**2)
         
         #normieren 
-        self.messreihe = self.messreihe /max(self.messreihe)
-        self.messreiheError = self.messreiheError/ max(self.messreihe)
+        self.messreihe = corrected
+        self.messreiheError = corrected_Error 
 
         #print( messtyp +" " + str(probename) + " " + str(self.liveTime) +" " +  str(self.realTime))
         if Probe:

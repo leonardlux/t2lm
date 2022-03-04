@@ -38,7 +38,7 @@ def gaussAnpassung(Messung,channelRange, plot=False, extraTitle=""):
     #myOutput.pprint()
 
     if plot:
-        addChannel = 30
+        addChannel = 0
         channelsPlot = np.arange(channelRange[0] -addChannel,channelRange[1]+ addChannel)
 
         fig, axs = plt.subplots(2,1, sharex=True, figsize=(20,10),gridspec_kw={'height_ratios': [3,1]})
