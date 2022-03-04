@@ -9,43 +9,46 @@ class Messung:
         self.messtyp = messtyp
         
         #Raw Data 
-        datei = open(dateiname, "r")
-        lines = []
-        for line in datei:
-            lines.append(int(line.replace("\n","")))
-        
-        self.liveTime = lines[0]    #live Time in der ersten Zeile 
-        self.realTime = lines[1]    #real Time in der zweiten Zeile 
+        with open(dateiname,"r") as datei: 
+            tmp = np.array(list(map(int , datei.read().split("\n")[:-1]))) #we need to remove the last part of the list because it ist equal to ""
+            self.liveTime, self.realTime = tmp[:2]  #live Time in der ersten Zeile 
+            self.messreiheRaw = tmp[2:]
 
-        self.messreiheRaw = lines[2:]  #Bins der Channel in den restlichen Zeilen
+        #Background
+        with open(dateinameBackground,"r") as datei: 
+            tmp = np.array(list(map(int , datei.read().split("\n")[:-1]))) #we need to remove the last part of the list because it ist equal to ""
+            self.liveTimeBackground, self.liveTimeBackground = tmp[:2]  #live Time in der ersten Zeile 
+            self.messreiheBackground = tmp[2:]
         
-        #Hintergrund
-        datei = open(dateinameBackground, "r")
-        lines = []
-        for line in datei:
-            lines.append(int(line.replace("\n","")))
-        
-        self.liveTimeBackground = lines[0]    #live Time in der ersten Zeile 
-        self.realTimeBackground = lines[1]    #real Time in der zweiten Zeile 
-
-        self.messreiheBackground = lines[2:]  #Bins der Channel in den restlichen Zeilen
-
         #Corrected and normed
-        self.messreihe = np.array(self.messreiheRaw)/self.liveTime - np.array(self.messreiheBackground)/self.liveTimeBackground
+        self.messreihe = self.messreiheRaw/self.liveTime - self.messreiheBackground/self.liveTimeBackground
+        self.messreihe = self.messreihe /max(self.messreihe)
 
         #print( messtyp +" " + str(probename) + " " + str(self.liveTime) +" " +  str(self.realTime))
         if probename!=None:
             self.Probe = Probe(probename)
         
     def plotData(self,title,filename):
-        plt.figure(figsize=(20,10))
-        plt.title(title)
-        plt.ylabel("Häufigkeit (normiert aufs maximum)")
+        fig1 = plt.figure(figsize=(20,10))
+        plt.title(title + "(Rohdaten)")
+        plt.ylabel("Häufigkeit pro Zeit")
         plt.xlabel("Channels")
-        plt.plot(np.array(self.messreiheRaw)/max(self.messreiheRaw), color="green")
-        plt.plot(np.array(self.messreiheBackground)/max(self.messreiheBackground), color="yellow")
-        plt.plot(np.array(self.messreihe)/max(self.messreihe),color="black")
-        plt.savefig("../plots/"+ filename)
+        plt.plot(self.messreiheRaw/self.liveTime, label="Rohdaten Messung")
+        plt.plot(self.messreiheBackground/self.liveTimeBackground, label="Hintergrund")
+        plt.legend()
+        plt.show()
+        #plt.savefig("../plots/"+ filename+"Raw")
+
+        fig2 = plt.figure(figsize=(20,10))
+        plt.title(title + "(Background korriegiert und normiert)")
+        plt.ylabel("normierte Häufigkeit pro Zeit")
+        plt.xlabel("Channels")
+        plt.plot(np.array(self.messreihe)/max(self.messreihe),label="relative Häufigkeit der Messdaten-Background")
+        plt.legend()
+        plt.savefig("../plots/"+ filename+"Corrected")
+        plt.close("all")
+
+
 
 
 class Probe:

@@ -1,2 +1,3 @@
 # Ignore everythins in Plots
 plots/*
+data/*
