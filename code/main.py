@@ -18,10 +18,6 @@ Cs137s = Probe("Cs137s")
 
 
 
-#Daten direkt
-probenDirekt = [Co60, Cs137w, Eu152, Na22,]
-dateinamenNah = [base + "/data/direkt/Nah_{0}.Tka".format(x.name) for x in probenDirekt] 
-dateinamenBackgroundNah = [base + "/data/direkt/Nah_Rausch.Tka"] 
 
 
 #Daten zyklisch
@@ -40,8 +36,21 @@ dateinamenBackgroundKonventionell = [base + "/data/konventionell/{0}gradHintergr
 # AUSWERTUNG
 
 #Auswertung Direkt
+#Daten direkt
+probenDirekt = [Co60, Cs137w, Eu152, Na22,]
+dateinamenNah = [base + "/data/direkt/Nah_{0}.Tka".format(x.name) for x in probenDirekt] 
+dateinamenBackgroundNah = [base + "/data/direkt/Nah_Rausch.Tka"] 
 
-messungenDirekt = []
+dateinamenFern = [base + "/data/direkt/Fern_{0}.Tka".format(x.name) for x in probenDirekt]
+dateinamenBackgroundFern = [base + "/data/direkt/Fern_Rausch.Tka"] 
+
+dateinamenDirekt = dateinamenNah + dateinamenFern
+dateinamenBackgroundDirekt = dateinamenBackgroundNah + dateinamenBackgroundFern
+messtypDirekt = ["direkt_Nah", "direkt_Fern"]
+
+print(dateinamenDirekt)
+
+#Anpassbare Parameter
 intervallPeakArrayDirekt = [
                     [[820,880],[905,975]],
                     [[460,535]],
@@ -50,15 +59,25 @@ intervallPeakArrayDirekt = [
 
 peakEnergy = [Co60.peakEnergy, Cs137w.peakEnergy, Eu152.peakEnergy, Na22.peakEnergy]
 
+def nahOrFernIndex(index):
+    if index < len(dateinamenNah):
+        return 0
+    else:  
+        return 1
+
+
+messungenDirekt = []
 figEnergyChannel, axs = plt.subplots(2,1,figsize=(20,10))
-for i in range(len(probenDirekt)):
+for i in range(len(dateinamenDirekt)):
+    print(i)
+    print(dateinamenDirekt[i])
     # einlesen und definieren der Messreihen mit Korrektur Offset
-    messungenDirekt.append(Messung(dateinamenNah[i], dateinamenBackgroundNah[0],"Nah_direkt",probenDirekt[i].name ,probenDirekt[i]))
+    messungenDirekt.append(Messung(dateinamenDirekt[i], dateinamenBackgroundDirekt[nahOrFernIndex(i)],messtypDirekt[nahOrFernIndex(i)],probenDirekt[i%len(dateinamenFern)].name ,probenDirekt[i%len(dateinamenFern)]))
     
     messungenDirekt[i].anpassungen = []
     messungenDirekt[i].deltaC = []
 
-    for j, intervall in enumerate(intervallPeakArrayDirekt[i]):
+    for j, intervall in enumerate(intervallPeakArrayDirekt[i%len(dateinamenFern)]):
         anpassung = gaussAnpassung(messungenDirekt[i],intervall, True, "Peak"+str(j+1), halbwert=True)
         messungenDirekt[i].anpassungen.append(anpassung[0])
         messungenDirekt[i].deltaC.append(anpassung[1])
@@ -75,7 +94,7 @@ energyData = []
 channelData = []
 source = []
 
-for i in range(len(probenDirekt)):
+for i in range(len(messungenDirekt)):
     for j in range(len(messungenDirekt[i].anpassungen)):
         if i == 3 and j == 0:
             continue 
@@ -84,10 +103,10 @@ for i in range(len(probenDirekt)):
         source.append(messungenDirekt[i].Probe.name +" Peak: " +str(j+1))
 
 # print(energyData)
-# print(len(energyData))
+print(len(energyData))
 
 # print(channelData)
-# print(len(channelData))
+print(len(channelData))
 
 
 
@@ -96,7 +115,7 @@ faktor, offset= linAnpassung(channelData, energyData, None, None, True).output.b
 
 #print(np.array(energyData) - (np.array(channelData) * faktor + offset))
 
-#Plotten der anpassungen und er literatur werte 
+#Plotten der anpassungen und der literatur werte 
 for i in range(len(messungenDirekt)):
     plt.figure(figsize=(20,10))
     plt.title("aaDirekt" + messungenDirekt[i].parameter)

@@ -13,7 +13,7 @@ weil alex ist uncool
 
 - deltaC negative 
 
-
+- lin Anpassung mit unsicherheiten
 
 - direkte Messung 
     + 1. messungen:  [Co,Na,Cs,Eu,Rausch](5)  * 20 min = 100min = 1:40h

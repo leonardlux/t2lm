@@ -27,6 +27,7 @@ def gaussAnpassung(Messung,channelRange, plot=False, extraTitle="", halbwert=Fal
     cutMessreihe = Messung.messreihe[channelRange[0]:channelRange[1]]
     cutMessreiheError = Messung.messreiheError[channelRange[0]:channelRange[1]]
     cutChannels = np.arange(channelRange[0],channelRange[1])
+    
     guess = [cutChannels[list(cutMessreihe).index(max(cutMessreihe))],(channelRange[1]-channelRange[0])/4,sum(cutMessreihe), cutMessreihe[0]*0.1]
     #guess[0] höchster messwert auf dem intervall
     #guess[1] wir nehmen an das wir mit dem auge ein 2 sigma intervall gewählt haben 
@@ -116,7 +117,7 @@ def linAnpassung(xValues, yValues, exValues, eyValues,plot=False):
     myData = odr.RealData(xValues,yValues)#,sx=exValues, sy=eyValues)
     myOdr = odr.ODR(myData, linear, beta0=guess)
     myOdr.run()
-    if True:
+    if False:
         print(myOdr.output.beta)
         #myOdr.output.pprint()
     
