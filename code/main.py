@@ -49,10 +49,10 @@ print(dateinamenDirekt)
 
 #Anpassbare Parameter
 intervallPeakArrayDirekt = [
-                    [[820,880],[905,975]],
-                    [[460,535]],
-                    [[93, 110], [247, 283], [551, 615], [682, 744], [765, 850], [945, 1005]],
-                    [[350, 423],[860,950]]]
+                    [[820,880],[905,975]],  #Co60 Pekas
+                    [[460,535]],            #Cs137w Peaks
+                    [[93, 110], [247, 283], [551, 615], [682, 744], [765, 850], [945, 1005]], #Eu152 Peaks
+                    [[350, 423],[860,950]]] #Na22 Peaks
 
 peakEnergy = [Co60.peakEnergy, Cs137w.peakEnergy, Eu152.peakEnergy, Na22.peakEnergy]
 
