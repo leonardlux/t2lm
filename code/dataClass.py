@@ -113,7 +113,7 @@ class Probe:
             self.a0 = 37 *10**3 #Bq
             self.time= 6567 *24*60*60
 
-            self.peakEnergy = [121.78, 344.28, 778.9, 964.08, 1085.9, 1112.1, 1408.0]     #(only gamma)
+            self.peakEnergy = [121.78, 344.28, 778.9, 964.08, 1085.9, 1408.0]     #(only gamma), 1112.1
             self.peaksIntensity = [28.58, 26.5, 12.94, 14.60, 10.21, 13.64, 21.00]
 
             t2 = 4943 *24*60*60 # Halbwertszeit

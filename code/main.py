@@ -56,9 +56,13 @@ for i in range(len(probenDirekt)):
     messungenDirekt.append(Messung(dateinamenNah[i], dateinamenBackgroundNah[0],"Nah_direkt",probenDirekt[i].name ,probenDirekt[i]))
     
     messungenDirekt[i].anpassungen = []
+    messungenDirekt[i].deltaC = []
 
     for j, intervall in enumerate(intervallPeakArrayDirekt[i]):
-        messungenDirekt[i].anpassungen.append(gaussAnpassung(messungenDirekt[i],intervall, True, "Peak"+str(j+1)))
+        anpassung = gaussAnpassung(messungenDirekt[i],intervall, True, "Peak"+str(j+1), halbwert=True)
+        messungenDirekt[i].anpassungen.append(anpassung[0])
+        messungenDirekt[i].deltaC.append(anpassung[1])
+        #print(anpassung[1])
 
     plt.close("all")
     
@@ -66,7 +70,7 @@ for i in range(len(probenDirekt)):
     #messungenDirekt[i].plotData("Nah & Direkt: "+ probenDirekt[i].name,"nah_dirket_"+ probenDirekt[i].name)
 
 #Lineare Regression aus den bekannten Energie werten der Peaks und der Channel zahl
-#Energy = x * Channel
+#Energy = x * Channel + o
 energyData = []
 channelData = []
 source = []
@@ -79,14 +83,33 @@ for i in range(len(probenDirekt)):
         channelData.append(messungenDirekt[i].anpassungen[j].output.beta[0])
         source.append(messungenDirekt[i].Probe.name +" Peak: " +str(j+1))
 
-print(energyData)
-print(len(energyData))
+# print(energyData)
+# print(len(energyData))
 
-print(channelData)
-print(len(channelData))
+# print(channelData)
+# print(len(channelData))
 
-print(source)
-linAnpassung(energyData, channelData, None, None, True)
+
+
+#print(source)
+faktor, offset= linAnpassung(channelData, energyData, None, None, True).output.beta
+
+#print(np.array(energyData) - (np.array(channelData) * faktor + offset))
+
+#Plotten der anpassungen und er literatur werte 
+for i in range(len(messungenDirekt)):
+    plt.figure(figsize=(20,10))
+    plt.title("aaDirekt" + messungenDirekt[i].parameter)
+    plt.plot(np.arange(len(messungenDirekt[i].messreihe)) * faktor + offset,messungenDirekt[i].messreihe)
+    colors = ["green","darkred","black","darkblue","sienna","green"]
+    colors2 = ["limegreen","red","dimgray","blue","chocolate","limegreen"]
+    for j,x in enumerate(messungenDirekt[i].anpassungen):
+        plt.vlines(x.output.beta[0] * faktor + offset,min(messungenDirekt[i].messreihe),max(messungenDirekt[i].messreihe), color=colors[j])
+        plt.vlines(messungenDirekt[i].Probe.peakEnergy[j],min(messungenDirekt[i].messreihe),max(messungenDirekt[i].messreihe), color=colors2[j])
+        #print("\n"+ messungenDirekt[i].parameter +" peak " + str(j+1))
+        #print(messungenDirekt[i].Probe.peakEnergy[j] - (x.output.beta[0] * faktor + offset))
+    
+    plt.savefig(base + "/plots/aaDirekt" + messungenDirekt[i].parameter )    
 
 
 

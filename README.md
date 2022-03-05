@@ -5,8 +5,13 @@ weil alex ist uncool
 
 # ToDo
 
+# Aktuelle Probleme
 
- + was ist residual varianz
+- was ist residual varianz
+
+- peaks der energie zuordnen
+
+- deltaC negative 
 
 
 
