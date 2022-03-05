@@ -17,9 +17,6 @@ Na22 = Probe("Na22")
 Cs137s = Probe("Cs137s")
 
 
-
-
-
 #Daten zyklisch
 winkelZyklisch = ["10","20","30","40","50"]
 dateinamenZirkular = [base + "/data/zyklisch/{0}grad.TKA".format(x) for x in winkelZyklisch]
